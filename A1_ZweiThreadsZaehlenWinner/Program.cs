@@ -16,7 +16,22 @@ class Program
         Thread threadB = new Thread(CountDownThreadB);
         threadA.Start();
         threadB.Start();
+        threadA.Join();
+        threadB.Join();
 
+        Console.WriteLine(countA);
+        if (countA < 50)
+        {
+            Console.WriteLine("thread1");
+        }
+        else if (countA == 50)
+        {
+            Console.WriteLine("Draw");
+        }
+        else
+        {
+            Console.WriteLine("thread2");
+        }
     }
 
     private static void CountUpThreadA()
@@ -25,8 +40,6 @@ class Program
         {
             if (countA == countB)
             {
-                Console.WriteLine(countA);
-                Console.WriteLine(countB);
                 break;
             }
             countA++;
@@ -40,8 +53,6 @@ class Program
         {
             if (countA == countB)
             {
-                Console.WriteLine(countA);
-                Console.WriteLine(countB);
                 break;
             }
             countB--;

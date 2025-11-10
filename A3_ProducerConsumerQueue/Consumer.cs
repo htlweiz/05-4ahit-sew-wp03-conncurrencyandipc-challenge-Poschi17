@@ -10,10 +10,15 @@ public class Consumer
     private volatile bool shouldStop = false;
     private Thread? consumerThread;
     private int sum = 0;
+    private ConcurrentQueue<int> queue;
+    static object lockObj = new object();
 
-    public Consumer()
+    public Consumer(ConcurrentQueue<int> queue)
     {
-        
+        lock (lockObj)
+        {
+            this.queue = queue;
+        }
         // Thread im Konstruktor starten
         consumerThread = new Thread(ConsumeNumbers);
         consumerThread.Start();
@@ -21,10 +26,13 @@ public class Consumer
 
     private void ConsumeNumbers()
     {
+        int number = 0;
         while (!shouldStop)
         {
-            // TODO
-            
+            queue.TryDequeue(out number);
+            sum = sum + number;
+            Console.WriteLine(queue.Count());
+
             Thread.Sleep(250); // 250ms Takt
         }
     }

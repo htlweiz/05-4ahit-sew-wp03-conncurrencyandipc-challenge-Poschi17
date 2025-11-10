@@ -34,14 +34,7 @@ public class Producer
             int number = random.Next(1, 101); // Zufällige Zahl zwischen 1 und 100
             lock (lockObj)
             {
-                if (queue.Count > 50)
-                {
-                    Stop();
-                }
-                else
-                {
-                    queue.Enqueue(number);
-                }
+                queue.Enqueue(number);
             }
             Thread.Sleep(1000); // 1 Sekunde Takt
         }

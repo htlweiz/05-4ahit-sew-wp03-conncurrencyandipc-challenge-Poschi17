@@ -5,52 +5,48 @@ namespace A1_ZweiThreadsZaehlenWinner;
 
 class Program
 {
-
+    static int countA = 1;
+    static int countB = 100;
 
     public static void Main(string[] args)
     {
-        int countA = 1;
-        int countB = 100;
+
         Console.WriteLine("Übung 1: Zwei Threads – Zählen & Winner");
-        Thread threadA = new Thread(() => CountUpThreadA(countA));
-        Thread threadB = new Thread(() => CountDownThreadB(countB));
-        Thread threadCheck = new Thread(() => CheckCount(countA, countB, threadA, threadB));
+        Thread threadA = new Thread(CountUpThreadA);
+        Thread threadB = new Thread(CountDownThreadB);
         threadA.Start();
         threadB.Start();
-        threadCheck.Start();
-        Console.WriteLine(countA);
+
     }
 
-    private static void CountUpThreadA(int countA)
+    private static void CountUpThreadA()
     {
         while (countA < 100)
         {
+            if (countA == countB)
+            {
+                Console.WriteLine(countA);
+                Console.WriteLine(countB);
+                break;
+            }
             countA++;
             Thread.Sleep(100);
         }
     }
 
-    private static void CountDownThreadB(int countB)
+    private static void CountDownThreadB()
     {
         while (countB > 1)
         {
+            if (countA == countB)
+            {
+                Console.WriteLine(countA);
+                Console.WriteLine(countB);
+                break;
+            }
             countB--;
             Thread.Sleep(100);
         }
-    }
-
-    private static int CheckCount(int countA, int countB, Thread threadA, Thread threadB)
-    {
-        while (countA != countB)
-        {
-            if (countA == countB)
-            {
-                threadA.Join();
-                threadB.Join();
-                return countA;
-            }
-        }
-        return 0;
     }
 
 }
